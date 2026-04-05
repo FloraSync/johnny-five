@@ -27,19 +27,36 @@ global.MockSerialPort = mocks.SerialPort;
 
 try {
   global.SerialPort = require("serialport").SerialPort;
-} catch {
+} catch (error) {
   global.SerialPort = MockSerialPort;
 }
 
 try {
   global.Firmata = require("firmata");
-} catch {
+} catch (error) {
   global.Firmata = MockFirmata;
 }
 
 if (!sinon.sandbox) {
+  const decorateFake = fake => {
+    if (fake && typeof fake.reset !== "function" && typeof fake.resetHistory === "function") {
+      fake.reset = fake.resetHistory.bind(fake);
+    }
+    return fake;
+  };
+
+  const decorateSandbox = sandbox => {
+    const spy = sandbox.spy.bind(sandbox);
+    sandbox.spy = (...args) => decorateFake(spy(...args));
+
+    const stub = sandbox.stub.bind(sandbox);
+    sandbox.stub = (...args) => decorateFake(stub(...args));
+
+    return sandbox;
+  };
+
   sinon.sandbox = {
-    create: () => sinon.createSandbox()
+    create: () => decorateSandbox(sinon.createSandbox())
   };
 }
 

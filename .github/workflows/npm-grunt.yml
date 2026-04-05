@@ -10,6 +10,8 @@ jobs:
   build:
     runs-on: ${{ matrix.os }}
     continue-on-error: ${{ matrix.allow-failure }}
+    env:
+      NO_SERIALPORT_INSTALL: 1
 
     strategy:
       matrix:
@@ -46,10 +48,6 @@ jobs:
       uses: actions/setup-node@v3
       with:
         node-version: ${{ matrix.node-version }}
-
-    - name: Setup Environment
-      run: |
-        echo "NO_SERIALPORT_INSTALL=1" >> $GITHUB_ENV
 
     - name: Install Dependencies
       run: |
