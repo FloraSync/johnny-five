@@ -10,6 +10,8 @@ jobs:
   build:
     runs-on: ${{ matrix.os }}
     continue-on-error: ${{ matrix.allow-failure }}
+    permissions:
+      contents: read
     env:
       NO_SERIALPORT_INSTALL: 1
 

@@ -38,6 +38,7 @@ try {
 }
 
 if (!sinon.sandbox) {
+  // Backward-compat for existing tests that rely on the deprecated sinon.sandbox API.
   const decorateFake = fake => {
     if (fake && typeof fake.reset !== "function" && typeof fake.resetHistory === "function") {
       fake.reset = fake.resetHistory.bind(fake);
