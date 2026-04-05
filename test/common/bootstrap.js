@@ -15,8 +15,6 @@ global.EVS = require("../../lib/evshield");
 
 // Third Party (library)
 global.converter = require("color-convert");
-global.SerialPort = require("serialport").SerialPort;
-global.Firmata = require("firmata");
 global.temporal = require("temporal");
 
 // Third Party (test)
@@ -26,6 +24,24 @@ global.sinon = require("sinon");
 
 global.MockFirmata = mocks.Firmata;
 global.MockSerialPort = mocks.SerialPort;
+
+try {
+  global.SerialPort = require("serialport").SerialPort;
+} catch {
+  global.SerialPort = MockSerialPort;
+}
+
+try {
+  global.Firmata = require("firmata");
+} catch {
+  global.Firmata = MockFirmata;
+}
+
+if (!sinon.sandbox) {
+  sinon.sandbox = {
+    create: () => sinon.createSandbox()
+  };
+}
 
 global.Accelerometer = five.Accelerometer;
 global.Animation = five.Animation;

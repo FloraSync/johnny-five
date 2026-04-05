@@ -8,11 +8,36 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: ${{ matrix.os }}
+    continue-on-error: ${{ matrix.allow-failure }}
 
     strategy:
       matrix:
-        node-version: [14.x, 16.x, 18.x]
+        include:
+          - os: ubuntu-latest
+            node-version: 14.x
+            allow-failure: false
+          - os: ubuntu-latest
+            node-version: 16.x
+            allow-failure: false
+          - os: ubuntu-latest
+            node-version: 18.x
+            allow-failure: false
+          - os: ubuntu-latest
+            node-version: 20.x
+            allow-failure: true
+          - os: windows-latest
+            node-version: 14.x
+            allow-failure: false
+          - os: windows-latest
+            node-version: 16.x
+            allow-failure: false
+          - os: windows-latest
+            node-version: 18.x
+            allow-failure: false
+          - os: windows-latest
+            node-version: 20.x
+            allow-failure: true
 
     steps:
     - uses: actions/checkout@v3

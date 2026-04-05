@@ -155,7 +155,7 @@
     "lodash.clonedeep": "^4.3.0",
     "lodash.debounce": "^4.0.3",
     "nanotimer": "0.3.10",
-    "temporal": "latest"
+    "temporal": "0.7.1"
   },
   "optionalDependencies": {
     "browser-serialport": "latest",
@@ -178,11 +178,14 @@
     "mock-firmata": "latest",
     "nyc": "^15.0.0",
     "optimist": "^0.6.1",
-    "sinon": "~1.10.2"
+    "sinon": "^21.0.3"
   },
   "scripts": {
     "test": "grunt",
     "test-cover": "nyc grunt nodeunit",
     "coveralls": "nyc --reporter=lcov grunt nodeunit && cat ./coverage/lcov.info | coveralls"
+  },
+  "engines": {
+    "node": ">=14.0.0"
   }
 }

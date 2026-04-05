@@ -212,6 +212,24 @@ exports["Chip -- MT3339"] = {
     test.done();
   },
 
+  listenDoesNotUseDeprecatedBufferConstructor(test) {
+    test.expect(1);
+    const warnings = [];
+    const handler = warning => {
+      warnings.push(warning);
+    };
+
+    process.on("warning", handler);
+    this.serialRead.reset();
+    this.gps.listen();
+    this.serialRead.args[0][1]([36, 71, 80, 86, 84, 71, 44, 48, 53, 52, 46, 55, 44, 84, 44, 48, 51, 52, 46, 52, 44, 77, 44, 48, 48, 53, 46, 53, 44, 78, 44, 48, 49, 48, 46, 50, 44, 75, 42, 52, 56, 13, 10]);
+    process.removeListener("warning", handler);
+
+    test.equal(warnings.some(warning => warning.code === "DEP0005"), false);
+    this.serialRead.reset();
+    test.done();
+  },
+
   parseNmeaSentence(test) {
 
     test.expect(25);
